@@ -1,0 +1,7 @@
+Changelog
+
+CracX V.0.2010.01.28
+Author: Till Riemer, till.riemer@googlemail.com
+
+- improved UI: automatic scolling also during dictionary attack, Observer pattern
+- fixed several bugs
