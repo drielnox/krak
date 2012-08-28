@@ -5,8 +5,8 @@ import java.util.Observable;
 import javax.swing.JTextArea;
 
 /**
- * Funktionalität für "Dictionary-Attacke" basierend auf einem Wörterbuch
- * @author Till
+ * functionality for attack based on a dictionary (txt file with multiple strings)
+ * @author Till Riemer
  *
  */
 public class DictionaryAttack extends Observable implements Runnable{

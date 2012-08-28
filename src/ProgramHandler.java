@@ -1,15 +1,15 @@
 import java.io.IOException;
 
 /**
- * Klasse für Interaktion zwischen Packprogramm und CracX
+ * Handler for interaction between external compression program and Cracx
  * @author Till
  *
  */
 public class ProgramHandler {
 
-    private String program; // verwendetes Packprogramm
-    private String programpath; // absolutes Verzeichnis des Packprogramms
-    private String filepath; // absoluter Pfad des verschlüsselten Archivs
+    private String program; // compression program
+    private String programpath; // absolute path of program
+    private String filepath; // absolute path of archive
     
     public ProgramHandler(String program, String programpath, String filepath) {
         setProgram(program);
@@ -42,10 +42,11 @@ public class ProgramHandler {
     }
 
     /**
-     * probiert die aktuelle Kombination aus
+     * opens the compression program, tries to decompress with current combination
+     * and closes the program again
      * 
-     * @param combination aktuelle PW-Kombination
-     * @return 7,2:Mißerfolg 0:Erfolg 1:Warnungen -> s. Programmdokumentationen
+     * @param combination current try
+     * @return 7,2:failure 0:success 1:warnings, check documentation of archive program (TODO)
      */
     int tryPW(String combination) {
         try {

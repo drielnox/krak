@@ -30,7 +30,7 @@ public class ContentView extends JPanel implements Observer{
     /**
      * Action-Listener für ContentView
      * 
-     * @author Till
+     * @author Till Riemer
      */
     class ContentViewListener implements ActionListener, ListSelectionListener, ChangeListener {
         String action; // ActionEvent action
@@ -46,9 +46,8 @@ public class ContentView extends JPanel implements Observer{
         }
 
         @Override
-        public void actionPerformed(ActionEvent arg0) { // ActionListener -
-                                                        // Buttons gedrückt
-            if (action == "start") { // Suche starten //$NON-NLS-1$
+        public void actionPerformed(ActionEvent arg0) { // buttons pressed
+            if (action == "start") { // start search //$NON-NLS-1$
                 File file = new File(filepath.getText());
                 File archive_program = new File(programpath.getText() + program.getSelectedValue() + ".exe"); //$NON-NLS-1$
                 if (file.exists() && file.canRead() && file.isFile() && archive_program.exists()) { // wenn zu entpackendes
@@ -61,9 +60,8 @@ public class ContentView extends JPanel implements Observer{
                     br.setMinPWLength(Integer.parseInt(minPWLength.getText()));
                     br.setHandler(new ProgramHandler(program.getSelectedValue().toString(), programpath.getText(), filepath.getText()));
                     
-                    
-                    
-                    if(dictionaryEnabled.isSelected()){ // Erst Dictionary-Attack, dann bei Misslingen BruteForce
+                    if(dictionaryEnabled.isSelected()){ 
+                    	// try dictionary attack first, afterwards bruteforce...
                         try {
                             dictionary.setHandler(new ProgramHandler(program.getSelectedValue().toString(), programpath.getText(), filepath.getText()));
                             dictionary.setDictionary(new LineNumberReader(new FileReader(dictionarypath.getText())));
@@ -71,26 +69,26 @@ public class ContentView extends JPanel implements Observer{
                             t.start();
                             
                         } catch (FileNotFoundException e) {
-                            anzeige.setText(anzeige.getText() + Messages.getString("ContentView.9")); //$NON-NLS-1$
+                            logView.setText(logView.getText() + Messages.getString("ContentView.9")); //$NON-NLS-1$
                         }
                                                
                     }
-                    else{ // BruteForce ohne Dictionary-Attack
+                    else{ // only bruteforce
                         Thread t = new Thread(br);
                         t.start();
                     }
                 } 
                 else if (!file.exists()) { // Archiv existiert nicht
-                    anzeige.setText(anzeige.getText() + Messages.getString("ContentView.15")); //$NON-NLS-1$
+                    logView.setText(logView.getText() + Messages.getString("ContentView.15")); //$NON-NLS-1$
                 } 
                 else if(!file.isFile()){ // Archiv ist keine gültige Datei
-                    anzeige.setText(anzeige.getText() + Messages.getString("ContentView.11"));                     //$NON-NLS-1$
+                    logView.setText(logView.getText() + Messages.getString("ContentView.11"));                     //$NON-NLS-1$
                 } 
                 else if(!file.canRead()){ // keine Leseberechtigung für Archiv
-                    anzeige.setText(anzeige.getText() + Messages.getString("ContentView.19")); //$NON-NLS-1$
+                    logView.setText(logView.getText() + Messages.getString("ContentView.19")); //$NON-NLS-1$
                 }
                 else if (!archive_program.exists()) { // Packprogramm existiert nicht
-                    anzeige.setText(anzeige.getText() + Messages.getString("ContentView.17")); //$NON-NLS-1$
+                    logView.setText(logView.getText() + Messages.getString("ContentView.17")); //$NON-NLS-1$
                 }
             } 
             else if (action == "stop") { // Suche stoppen //$NON-NLS-1$
@@ -101,17 +99,17 @@ public class ContentView extends JPanel implements Observer{
         }
 
         @Override
-        public void stateChanged(ChangeEvent arg0) {
-            if(dictionaryEnabled.isSelected()){ // wenn Dictionary-Option ausgewählt
+        public void stateChanged(ChangeEvent arg0) { // toggle dictionary enable
+        	if(dictionaryEnabled.isSelected()){
                 dictionarypath.setEnabled(true);
             }
-            else{ // wenn nicht
+            else{
                 dictionarypath.setEnabled(false);
             }
         }
 
         @Override
-        public void valueChanged(ListSelectionEvent arg0) { // ListSelectionListener - Programm selektiert
+        public void valueChanged(ListSelectionEvent arg0) { // program selector
             if (!arg0.getValueIsAdjusting()) {
                 if (program.getSelectedValue() == "7z") { //$NON-NLS-1$
                     programpath.setText("C:\\Program Files\\7-Zip\\"); //$NON-NLS-1$
@@ -122,44 +120,46 @@ public class ContentView extends JPanel implements Observer{
         }
     }
 
-    JTextField maxPWLength; // Maximale PW-Länge
+    JTextField maxPWLength; 
     JLabel maxPWLengthdesc;
-    JTextField minPWLength; // Minimale PW-Länge
+    JTextField minPWLength; 
     JLabel minPWLengthdesc;
-    JTextField charset; // erlaubter Zeichensatz
+    JTextField charset; 
     JLabel charsetdesc;
     
     JLabel dictionaryEnabledDesc;
-    JCheckBox dictionaryEnabled; // vor bruteforce dictionary benutzen?
+    JCheckBox dictionaryEnabled; // if activated, first dictionary attack, then bruteforce
     JLabel dictionarypathdesc;
-    JTextField dictionarypath; // zu benutzendes Dictionary-File
+    JTextField dictionarypath; // txt file including dictionary
 
-    JTextField filepath; // zu entpackende Datei
+    JTextField filepath; // file to crack
     JLabel filepathdesc;
-    JTextField programpath; // Pfad des Packprograms
+    JTextField programpath; // program path
     JLabel programpathdesc;
-    JList program; // Programmauswahl
+    @SuppressWarnings("rawtypes")
+	JList program; // program selector
     JLabel programdesc;
 
-    JButton start;  // PW-Suche starten
-    JButton stop;   // PW-Suche abbrechen
+    JButton start;  // start search
+    JButton stop;   // stop search
 
-    JTextArea anzeige; // Anzeige des Suchvorgangs
+    JTextArea logView;
 
-    BruteForce br;                  // MODEL - Brute-Force-Vorgang
-    DictionaryAttack dictionary;    // MODEL - Dictionary-Vorgang
+    BruteForce br;                  // MODEL - bruteforce process
+    DictionaryAttack dictionary;    // MODEL - dictionary process
 
     /**
-     * Konstruktor - erzeugt die Content View mit allen graphischen Komponenten
+     * Constructor for content view
      * 
      * @param anzeige2
      */
-    public ContentView(JTextArea anzeige) {
-        this.anzeige = anzeige;
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public ContentView(JTextArea logView) {
+        this.logView = logView;
         setLayout(new GridLayout(4, 1));
         
-        br = new BruteForce(anzeige);
-        dictionary = new DictionaryAttack(br, anzeige);
+        br = new BruteForce(logView);
+        dictionary = new DictionaryAttack(br, logView);
        
         br.addObserver(this);
         dictionary.addObserver(this);
@@ -222,7 +222,7 @@ public class ContentView extends JPanel implements Observer{
 
         programdesc = new JLabel(Messages.getString("ContentView.24")); //$NON-NLS-1$
         programdesc.setToolTipText(Messages.getString("ContentView.25")); //$NON-NLS-1$
-        String[] programs = { "7z", "WinRAR" }; // Auswählbare Packprogramme //$NON-NLS-1$ //$NON-NLS-2$
+        String[] programs = { "7z", "WinRAR" }; // selectable programs //$NON-NLS-1$ //$NON-NLS-2$
         program = new JList(programs);
         program.setSelectedIndex(0);
         program.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -276,15 +276,15 @@ public class ContentView extends JPanel implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        if(arg.equals("success")){ // PW gefunden
+        if(arg.equals("success")){
             start.setEnabled(true);
             stop.setEnabled(false);
         }
-        else if(arg.equals("failure")){ // PW nicht gefunden
+        else if(arg.equals("failure")){
             start.setEnabled(true);
             stop.setEnabled(false);
         }
-        // andere Argumente sind nicht definiert
+        // TODO: handle non-defined args
         
     }
 
