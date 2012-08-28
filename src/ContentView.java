@@ -1,3 +1,4 @@
+import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,7 @@ import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -23,6 +25,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileFilter;
 
 @SuppressWarnings("serial")
 public class ContentView extends JPanel implements Observer{
@@ -121,24 +124,20 @@ public class ContentView extends JPanel implements Observer{
     }
 
     JTextField maxPWLength; 
-    JLabel maxPWLengthdesc;
     JTextField minPWLength; 
-    JLabel minPWLengthdesc;
     JTextField charset; 
-    JLabel charsetdesc;
     
-    JLabel dictionaryEnabledDesc;
     JCheckBox dictionaryEnabled; // if activated, first dictionary attack, then bruteforce
-    JLabel dictionarypathdesc;
     JTextField dictionarypath; // txt file including dictionary
+    JButton dictBrowse; // button to browse for dictionary file
 
     JTextField filepath; // file to crack
-    JLabel filepathdesc;
+    JButton fileBrowse; // button to browse for file
+    
     JTextField programpath; // program path
-    JLabel programpathdesc;
+    JButton programBrowse; // button to browse for program path
     @SuppressWarnings("rawtypes")
-	JList program; // program selector
-    JLabel programdesc;
+	JList program; // archive program selector
 
     JButton start;  // start search
     JButton stop;   // stop search
@@ -156,7 +155,8 @@ public class ContentView extends JPanel implements Observer{
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public ContentView(JTextArea logView) {
         this.logView = logView;
-        setLayout(new GridLayout(4, 1));
+        //setLayout(new GridLayout(1, 2));
+        setLayout(new FlowLayout());
         
         br = new BruteForce(logView);
         dictionary = new DictionaryAttack(br, logView);
@@ -169,59 +169,64 @@ public class ContentView extends JPanel implements Observer{
         bruteforcePanel.setLayout(new GridLayout(3, 1));
         bruteforcePanel.setBorder(new TitledBorder(Messages.getString("ContentView.20"))); //$NON-NLS-1$
 
-        minPWLengthdesc = new JLabel(Messages.getString("ContentView.2")); //$NON-NLS-1$
-        minPWLength = new JTextField();
+        minPWLength = new JTextField(Messages.getString("ContentView.3")); //$NON-NLS-1$
         minPWLength.setColumns(2);
-        minPWLength.setText(Messages.getString("ContentView.3")); //$NON-NLS-1$
-
-        maxPWLengthdesc = new JLabel(Messages.getString("ContentView.4")); //$NON-NLS-1$
-        maxPWLength = new JTextField();
+        maxPWLength = new JTextField(Messages.getString("ContentView.5")); //$NON-NLS-1$
         maxPWLength.setColumns(2);
-        maxPWLength.setText(Messages.getString("ContentView.5")); //$NON-NLS-1$
         
-        charsetdesc = new JLabel(Messages.getString("ContentView.6")); //$NON-NLS-1$
-        charsetdesc.setToolTipText(Messages.getString("ContentView.7")); //$NON-NLS-1$
-        charset = new JTextField();
+        charset = new JTextField("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"); //$NON-NLS-1$
         charset.setToolTipText(Messages.getString("ContentView.8")); //$NON-NLS-1$
         charset.setColumns(15);
-        charset.setText("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"); //$NON-NLS-1$
 
-        bruteforcePanel.add(minPWLengthdesc);
+        bruteforcePanel.add(new JLabel(Messages.getString("ContentView.2"))); // min pw length desc
         bruteforcePanel.add(minPWLength);
-        bruteforcePanel.add(maxPWLengthdesc);
+        bruteforcePanel.add(new JLabel(Messages.getString("ContentView.4"))); // max pw length desc
         bruteforcePanel.add(maxPWLength);
-        bruteforcePanel.add(charsetdesc);
+        bruteforcePanel.add(new JLabel(Messages.getString("ContentView.6"))); // charset desc
         bruteforcePanel.add(charset);
         // ---------------------------------------------------------------------------------
         // ---------------------------------------------------------------------------------
         JPanel dictionaryPanel = new JPanel();
         dictionaryPanel.setBorder(new TitledBorder(Messages.getString("ContentView.21"))); //$NON-NLS-1$
-        dictionaryPanel.setLayout(new GridLayout(2,2));
+        dictionaryPanel.setLayout(new GridLayout(5, 1));
         
-        dictionaryEnabledDesc = new JLabel(Messages.getString("ContentView.22")); //$NON-NLS-1$
         dictionaryEnabled = new JCheckBox();
         dictionaryEnabled.addChangeListener(new ContentViewListener());
-        dictionarypathdesc = new JLabel(Messages.getString("ContentView.23")); //$NON-NLS-1$
-        dictionarypathdesc.setToolTipText(Messages.getString("ContentView.26")); //$NON-NLS-1$
-        dictionarypath = new JTextField();
+        dictionarypath = new JTextField("C:\\"); //$NON-NLS-1$
         dictionarypath.setToolTipText(Messages.getString("ContentView.27")); //$NON-NLS-1$
-        dictionarypath.setColumns(15);
-        dictionarypath.setText("C:\\"); //$NON-NLS-1$
+        dictionarypath.setColumns(10);
         dictionarypath.setEnabled(false);
+        dictBrowse = new JButton("Browse");
+        dictBrowse.addActionListener(new ActionListener(){
+        	@Override
+			public void actionPerformed(ActionEvent arg0) {
+        		JFileChooser chooser = new JFileChooser();
+        		chooser.addChoosableFileFilter(new FileFilter() {
+        		    public boolean accept(File f) {
+        		      if (f.isDirectory()) return true;
+        		      return f.getName().toLowerCase().endsWith(".txt");
+        		    }
+        		    public String getDescription () { return "TXTs"; }  
+        		  });
+        		  chooser.setMultiSelectionEnabled(false);
+        		if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+                    dictionarypath.setText(chooser.getSelectedFile().getAbsolutePath());
+                }
+			}
+        });
         
-        dictionaryPanel.add(dictionaryEnabledDesc);
+        dictionaryPanel.add(new JLabel(Messages.getString("ContentView.22"))); // dictionary enabled desc
         dictionaryPanel.add(dictionaryEnabled);
-        dictionaryPanel.add(dictionarypathdesc);
+        dictionaryPanel.add(new JLabel(Messages.getString("ContentView.23"))); // dictionary path desc
         dictionaryPanel.add(dictionarypath);
+        dictionaryPanel.add(dictBrowse);
         
         // ---------------------------------------------------------------------------------
         // ---------------------------------------------------------------------------------
         JPanel generalPanel = new JPanel();
-        generalPanel.setLayout(new GridLayout(3, 2));
+        generalPanel.setLayout(new GridLayout(5, 2));
         generalPanel.setBorder(new TitledBorder(Messages.getString("ContentView.32"))); //$NON-NLS-1$
 
-        programdesc = new JLabel(Messages.getString("ContentView.24")); //$NON-NLS-1$
-        programdesc.setToolTipText(Messages.getString("ContentView.25")); //$NON-NLS-1$
         String[] programs = { "7z", "WinRAR" }; // selectable programs //$NON-NLS-1$ //$NON-NLS-2$
         program = new JList(programs);
         program.setSelectedIndex(0);
@@ -229,26 +234,46 @@ public class ContentView extends JPanel implements Observer{
         program.addListSelectionListener(new ContentViewListener());
         program.setToolTipText(Messages.getString("ContentView.28")); //$NON-NLS-1$
         
-        filepathdesc = new JLabel(Messages.getString("ContentView.10")); //$NON-NLS-1$
-        filepathdesc.setToolTipText(Messages.getString("ContentView.29")); //$NON-NLS-1$
-        filepath = new JTextField();
-        filepath.setColumns(15);
+        filepath = new JTextField("C:\\"); //$NON-NLS-1$
+        filepath.setColumns(10);
         filepath.setToolTipText(Messages.getString("ContentView.30")); //$NON-NLS-1$
-        filepath.setText("C:\\"); //$NON-NLS-1$
+        fileBrowse = new JButton("Browse");
+        fileBrowse.addActionListener(new ActionListener(){
+        	@Override
+			public void actionPerformed(ActionEvent arg0) {
+        		JFileChooser chooser = new JFileChooser();
+        		if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+                    filepath.setText(chooser.getSelectedFile().getAbsolutePath());
+                }
+			}
+        });
 
-        programpathdesc = new JLabel(Messages.getString("ContentView.12")); //$NON-NLS-1$
-        programpathdesc.setToolTipText(Messages.getString("ContentView.13")); //$NON-NLS-1$
-        programpath = new JTextField();
+        programpath = new JTextField("C:\\Program Files\\7-Zip\\"); //$NON-NLS-1$
         programpath.setToolTipText(Messages.getString("ContentView.14")); //$NON-NLS-1$
-        programpath.setColumns(15);
-        programpath.setText("C:\\Program Files\\7-Zip\\"); //$NON-NLS-1$
+        programpath.setColumns(10);
+        programBrowse = new JButton("Browse");
+        programBrowse.addActionListener(new ActionListener(){
+        	@Override
+			public void actionPerformed(ActionEvent arg0) {
+        		JFileChooser chooser = new JFileChooser();
+        		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        		chooser.setMultiSelectionEnabled(false);
+        		if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+                    programpath.setText(chooser.getSelectedFile().getAbsolutePath());
+                }
+			}
+        });
 
-        generalPanel.add(programdesc);
+        generalPanel.add(new JLabel(Messages.getString("ContentView.24"))); // program desc
         generalPanel.add(program);
-        generalPanel.add(programpathdesc);
+        generalPanel.add(new JLabel(Messages.getString("ContentView.12"))); // program path desc
+        generalPanel.add(new JLabel());
         generalPanel.add(programpath);
-        generalPanel.add(filepathdesc);
+        generalPanel.add(programBrowse);
+        generalPanel.add(new JLabel(Messages.getString("ContentView.10"))); // file path desc
+        generalPanel.add(new JLabel());
         generalPanel.add(filepath);
+        generalPanel.add(fileBrowse);
         // ---------------------------------------------------------------------------------
         // ---------------------------------------------------------------------------------
         JPanel buttons = new JPanel();
@@ -268,9 +293,12 @@ public class ContentView extends JPanel implements Observer{
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         add(generalPanel);
-        add(dictionaryPanel);
-        add(bruteforcePanel);
-        add(buttons);
+        JPanel tmpPanel = new JPanel(new GridLayout(2, 2));
+        tmpPanel.add(dictionaryPanel);
+        tmpPanel.add(new JLabel());
+        tmpPanel.add(bruteforcePanel);
+        tmpPanel.add(buttons);
+        add(tmpPanel);
         setVisible(true);
     }
 

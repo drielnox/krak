@@ -27,7 +27,7 @@ public class View extends JFrame {
      */
     public View() {
         super(Messages.getString("Version")); //$NON-NLS-1$
-        setLayout(new GridLayout(1, 2));
+        setLayout(new GridLayout(2, 1));
         menubar = new BruteforcerMenuBar();
 
         // VIEW PANEL ---------------------------
