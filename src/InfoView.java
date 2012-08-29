@@ -1,10 +1,8 @@
 import java.awt.Dimension;
-import java.awt.GridLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class InfoView extends JFrame {
