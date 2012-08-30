@@ -1,5 +1,9 @@
 Changelog
 
+CracX V.0.5.01
+
+- multi-language support (by now: English and German - translators welcome)
+
 CracX V.0.5
 
 - changed window layout, options at the top

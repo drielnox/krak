@@ -13,11 +13,13 @@ import javax.swing.JTextArea;
  * main window view
  */
 public class View extends JFrame {
+	
+	static View mainView;
 
     public static void main(String[] args) {
-        new View();
+        mainView = new View();
     }
-
+    
     ContentView optionsView;  
     JPanel searchPanel;        
     BruteforcerMenuBar menubar; 
@@ -34,7 +36,6 @@ public class View extends JFrame {
         searchPanel = new JPanel();
 
         JTextArea logView = new JTextArea();
-//        logView.setMinimumSize(new Dimension(100, 200));
         logView.setEditable(false);
         logView.setText(Messages.getString("View.1")); //$NON-NLS-1$
         JScrollPane logViewPanel = new JScrollPane(logView);

@@ -1,11 +1,16 @@
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * string management for different languages
+ * @author Till Riemer
+ *
+ */
 public class Messages {
-    private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$
+    private static String LANG_SET = "messages"; //$NON-NLS-1$
 
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
-            .getBundle(BUNDLE_NAME);
+    private static ResourceBundle RESOURCE_BUNDLE = ResourceBundle
+            .getBundle(LANG_SET);
 
     public static String getString(String key) {
         try {
@@ -13,6 +18,13 @@ public class Messages {
         } catch (MissingResourceException e) {
             return '!' + key + '!';
         }
+    }
+    
+    public static void setLanguage(String langset){
+    	LANG_SET = langset;
+    	RESOURCE_BUNDLE = ResourceBundle.getBundle(LANG_SET);
+    	View.mainView.dispose();
+    	View.mainView = new View();
     }
 
     private Messages() {

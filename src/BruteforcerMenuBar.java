@@ -43,15 +43,26 @@ public class BruteforcerMenuBar extends JMenuBar {
         // ----------------------------------------------
         // ---------- SPRACHEN --------------------------
         language = new JMenu(Messages.getString("BruteforcerMenuBar.3")); //$NON-NLS-1$
-        language.setEnabled(false); // TODO
-
         english = new JMenuItem("english"); //$NON-NLS-1$
         english.setIcon(new ImageIcon("icons/english.png")); //$NON-NLS-1$
-        language.add(english);
+        english.addActionListener(new ActionListener(){
+        	@Override
+            public void actionPerformed(ActionEvent arg0) {
+                Messages.setLanguage("messages");
+            }
+        });
         german = new JMenuItem("deutsch"); //$NON-NLS-1$
         german.setIcon(new ImageIcon("icons/german.png")); //$NON-NLS-1$
-        language.add(german);
+        german.addActionListener(new ActionListener(){
+        	@Override
+            public void actionPerformed(ActionEvent arg0) {
+                Messages.setLanguage("messages_de");
+            }
+        });
 
+        language.add(english);
+        language.add(german);
+        
         add(program);
         add(language);
     }
