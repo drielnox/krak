@@ -104,9 +104,11 @@ public class ContentView extends JPanel implements Observer{
         public void stateChanged(ChangeEvent arg0) { // toggle dictionary enable
         	if(dictionaryEnabled.isSelected()){
                 dictionarypath.setEnabled(true);
+                dictBrowse.setEnabled(true);
             }
             else{
                 dictionarypath.setEnabled(false);
+                dictBrowse.setEnabled(false);
             }
         }
 
@@ -184,6 +186,7 @@ public class ContentView extends JPanel implements Observer{
         bruteforcePanel.add(new JLabel(Messages.getString("ContentView.6"))); // charset desc
         bruteforcePanel.add(charset);
         // ---------------------------------------------------------------------------------
+        // DICTIONARY PANEL - options disabled by default
         // ---------------------------------------------------------------------------------
         JPanel dictionaryPanel = new JPanel();
         dictionaryPanel.setBorder(new TitledBorder(Messages.getString("ContentView.21"))); //$NON-NLS-1$
@@ -196,6 +199,7 @@ public class ContentView extends JPanel implements Observer{
         dictionarypath.setColumns(10);
         dictionarypath.setEnabled(false);
         dictBrowse = new JButton("Browse");
+        dictBrowse.setEnabled(false);
         dictBrowse.addActionListener(new ActionListener(){
         	@Override
 			public void actionPerformed(ActionEvent arg0) {
