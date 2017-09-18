@@ -45,11 +45,16 @@ public class DictionaryAttack extends Observable implements Runnable{
     public void run() {
         setRunning(true);
         try {
-            for(String line = dictionary.readLine(); line != null && running; line = dictionary.readLine()){ // jede Zeile bis Dateiende oder stopp
+        	// iterate over all dictionary lines while not stopped
+            for(String line = dictionary.readLine(); line != null && running; line = dictionary.readLine())
+            { 
                 int ret = handler.tryPW(line);
-                anzeige.setText(anzeige.getText() + "\n" + line); //$NON-NLS-1$
-                if(ret == 1 || ret == 0){ // bei Erfolg
-                    anzeige.setText(anzeige.getText() + Messages.getString("DictionaryAttack.1") + line); //$NON-NLS-1$
+                
+                anzeige.setText(line); //$NON-NLS-1$
+                
+                if(ret == 1 || ret == 0) // success
+                {
+                	anzeige.setText(String.format("%s%s", Messages.getString("DictionaryAttack.1"), line)); //$NON-NLS-1$
                     setChanged();
                     notifyObservers("success");
                     setRunning(false);
@@ -57,10 +62,13 @@ public class DictionaryAttack extends Observable implements Runnable{
                 anzeige.setCaretPosition(anzeige.getText().length());
             }
             getDictionary().close();
-        } catch (IOException e) {
+        } catch (IOException e) 
+        {
             e.printStackTrace();
         }
-        if(running){ // wenn nach Dictionary noch nicht stop gedrückt oder Erfolg gehabt, BruteForce
+        // if nothing found yet, do a bruteforce
+        if(running)
+        {
             br.run();
         }
         setChanged();

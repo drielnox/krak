@@ -50,10 +50,12 @@ public class ContentView extends JPanel implements Observer{
         @Override
         public void actionPerformed(ActionEvent arg0) { // buttons pressed
             if (action == "start") { // start search //$NON-NLS-1$
+            	
+            	logView.setText("");
+            	
                 File file = new File(filepath.getText());
-                File archive_program = new File(programpath.getText() + program.getSelectedValue() + ".exe"); //$NON-NLS-1$
-                if (file.exists() && file.canRead() && file.isFile() && archive_program.exists()) { // wenn zu entpackendes
-                                                                                                // Archiv und Packprogramm existiert
+                File archive_program = new File(programpath.getText() + File.separator + program.getSelectedValue() + ".exe"); //$NON-NLS-1$
+                if (file.exists() && file.canRead() && file.isFile() && archive_program.exists()) { // if archive and software found
                     start.setEnabled(false);
                     stop.setEnabled(true);
                     
@@ -80,20 +82,20 @@ public class ContentView extends JPanel implements Observer{
                         t.start();
                     }
                 } 
-                else if (!file.exists()) { // Archiv existiert nicht
+                else if (!file.exists()) { // archive not found
                     logView.setText(logView.getText() + Messages.getString("ContentView.15")); //$NON-NLS-1$
                 } 
-                else if(!file.isFile()){ // Archiv ist keine gültige Datei
+                else if(!file.isFile()){ // archive not a valid file
                     logView.setText(logView.getText() + Messages.getString("ContentView.11"));                     //$NON-NLS-1$
                 } 
-                else if(!file.canRead()){ // keine Leseberechtigung für Archiv
+                else if(!file.canRead()){ // no read access on archive file
                     logView.setText(logView.getText() + Messages.getString("ContentView.19")); //$NON-NLS-1$
                 }
-                else if (!archive_program.exists()) { // Packprogramm existiert nicht
+                else if (!archive_program.exists()) { // archive software not found
                     logView.setText(logView.getText() + Messages.getString("ContentView.17")); //$NON-NLS-1$
                 }
             } 
-            else if (action == "stop") { // Suche stoppen //$NON-NLS-1$
+            else if (action == "stop") { // stop search //$NON-NLS-1$
                 br.stop();
                 start.setEnabled(true);
                 stop.setEnabled(false);
@@ -116,9 +118,9 @@ public class ContentView extends JPanel implements Observer{
         public void valueChanged(ListSelectionEvent arg0) { // program selector
             if (!arg0.getValueIsAdjusting()) {
                 if (program.getSelectedValue() == "7z") { //$NON-NLS-1$
-                    programpath.setText("C:\\Program Files\\7-Zip\\"); //$NON-NLS-1$
+                    programpath.setText("C:\\Program Files\\7-Zip"); //$NON-NLS-1$
                 } else if (program.getSelectedValue() == "WinRAR") { //$NON-NLS-1$
-                    programpath.setText("C:\\Program Files\\WinRAR\\"); //$NON-NLS-1$
+                    programpath.setText("C:\\Program Files\\WinRAR"); //$NON-NLS-1$
                 }
             }
         }
@@ -126,7 +128,9 @@ public class ContentView extends JPanel implements Observer{
 
     JTextField maxPWLength; 
     JTextField minPWLength; 
+    
     JTextField charset; 
+    JButton charsetResetButton;
     
     JCheckBox dictionaryEnabled; // if activated, first dictionary attack, then bruteforce
     JTextField dictionarypath; // txt file including dictionary
@@ -147,6 +151,8 @@ public class ContentView extends JPanel implements Observer{
 
     BruteForce br;                  // MODEL - bruteforce process
     DictionaryAttack dictionary;    // MODEL - dictionary process
+    
+    static final String defaultCharset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     /**
      * Constructor for content view
@@ -166,8 +172,10 @@ public class ContentView extends JPanel implements Observer{
         dictionary.addObserver(this);
 
         // ---------------------------------------------------------------------------------
+        // CHARSET SELECTION
+        // ---------------------------------------------------------------------------------
         JPanel bruteforcePanel = new JPanel();
-        bruteforcePanel.setLayout(new GridLayout(3, 1));
+        bruteforcePanel.setLayout(new GridLayout(4, 3));
         bruteforcePanel.setBorder(new TitledBorder(Messages.getString("ContentView.20"))); //$NON-NLS-1$
 
         minPWLength = new JTextField(Messages.getString("ContentView.3")); //$NON-NLS-1$
@@ -175,9 +183,16 @@ public class ContentView extends JPanel implements Observer{
         maxPWLength = new JTextField(Messages.getString("ContentView.5")); //$NON-NLS-1$
         maxPWLength.setColumns(2);
         
-        charset = new JTextField("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"); //$NON-NLS-1$
+        charset = new JTextField(defaultCharset); //$NON-NLS-1$
         charset.setToolTipText(Messages.getString("ContentView.8")); //$NON-NLS-1$
         charset.setColumns(15);
+        charsetResetButton = new JButton(Messages.getString("ContentView.34")); //$NON-NLS-1$
+        charsetResetButton.addActionListener(new ActionListener() {
+        	@Override
+			public void actionPerformed(ActionEvent arg0) {
+        		charset.setText(defaultCharset);
+        	}
+        });
 
         bruteforcePanel.add(new JLabel(Messages.getString("ContentView.2"))); // min pw length desc
         bruteforcePanel.add(minPWLength);
@@ -185,6 +200,9 @@ public class ContentView extends JPanel implements Observer{
         bruteforcePanel.add(maxPWLength);
         bruteforcePanel.add(new JLabel(Messages.getString("ContentView.6"))); // charset desc
         bruteforcePanel.add(charset);
+        
+        bruteforcePanel.add(new JLabel());
+        bruteforcePanel.add(charsetResetButton);
         // ---------------------------------------------------------------------------------
         // DICTIONARY PANEL - options disabled by default
         // ---------------------------------------------------------------------------------
@@ -251,7 +269,7 @@ public class ContentView extends JPanel implements Observer{
 			}
         });
 
-        programpath = new JTextField("C:\\Program Files\\7-Zip\\"); //$NON-NLS-1$
+        programpath = new JTextField("C:\\Program Files\\7-Zip"); //$NON-NLS-1$
         programpath.setToolTipText(Messages.getString("ContentView.14")); //$NON-NLS-1$
         programpath.setColumns(10);
         programBrowse = new JButton("Browse");

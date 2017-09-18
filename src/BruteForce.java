@@ -36,19 +36,20 @@ public class BruteForce extends Observable implements Runnable{
     }
 
     public void run() {
+    	combination = "";
         running = true;
         
         for (int i = 0; i < minPWLength - 1; i++) { // initialize with space chars
             combination += " "; //$NON-NLS-1$
         }
         for (int i = minPWLength - 1; i < maxPWLength; i++) { // for every string length
-            if (tryCombination(i) == 1) {
-                logView.setText(logView.getText()
-                        + Messages.getString("BruteForce.2") //$NON-NLS-1$
+            if (tryCombination(i) == 1) 
+            {
+                logView.setText(Messages.getString("BruteForce.2") //$NON-NLS-1$
                         + combination);
-                logView.setCaretPosition(logView.getText().length());
                 setChanged();
                 notifyObservers("success");
+                return;
             }
         }
         setChanged();
@@ -92,9 +93,8 @@ public class BruteForce extends Observable implements Runnable{
                     combination = combination + temp.substring(index + 1);
                 }
 
-                // plot combination and scroll view down
-                logView.setText(logView.getText() + "\n" + combination); //$NON-NLS-1$
-                logView.setCaretPosition(logView.getText().length());
+                // plot combination
+                logView.setText(combination); //$NON-NLS-1$
 
                 if (index > 0) { // increment from lowest indexes first
                     if (tryCombination(index - 1) == 1)

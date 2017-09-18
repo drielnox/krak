@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -46,23 +47,27 @@ public class ProgramHandler {
      * and closes the program again
      * 
      * @param combination current try
-     * @return 7,2:failure 0:success 1:warnings, check documentation of archive program (TODO)
+     * @return 7,2:failure 0:success 1:warnings
      */
     int tryPW(String combination) {
         try {
             Process process;
+            
+            //String outputPath = filepath.substring(0, filepath.lastIndexOf(File.separator));
+            
             if (program == "7z") { //$NON-NLS-1$
                 process = new ProcessBuilder(
-                        programpath + "7z", "x", filepath, "-aoap" + combination).start(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                return (process.waitFor());
+                        programpath + File.separator + "7z", "x", filepath, "-aoa", "-p" + combination/*, "-o" + outputPath*/).start(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ // old: "-aoap" + combination
+                int res = process.waitFor();
+                return res;
             } 
             else if (program == "WinRAR") { //$NON-NLS-1$
                 process = new ProcessBuilder(
-                        programpath + "WinRAR", "x", "-p" + combination, "-inul", "-ibck", "-y", filepath).start(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+                        programpath + File.separator + "UnRAR", "x", "-p" + combination, "-inul", "-ibck", "-y", filepath).start(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
                 return (process.waitFor());
             }
 
-            return 7; // No archive program choosed
+            return 7; // No archive program chosen
         } catch (IOException e) {
             e.printStackTrace();
             return 2; // Command Line Error

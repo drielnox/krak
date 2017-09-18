@@ -18,6 +18,9 @@ public class InfoView extends JFrame {
     public InfoView() {
         super(Messages.getString("InfoView.0")); //$NON-NLS-1$
         add(new JLabel(new ImageIcon("info.png")));
+        
+        this.setAlwaysOnTop(true);
+        this.setLocationByPlatform(true);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setMinimumSize(new Dimension(400, 250));
         this.setResizable(false);

@@ -1,5 +1,14 @@
 Changelog
 
+CracX V.0.6
+- fixed broken extraction parameters with newer versions of 7-zip and WinRAR
+- the previous settings are now saved into a text file, and loaded on startup
+- fixed issues with locating the archive software, based on the way the path string was interpreted
+- fixed performance drops when running over a longer period - only the current combination is printed in the output view now
+- fixed abort button behaviour
+- English localization improvements
+- source code cleanup
+
 CracX V.0.5.01
 
 - multi-language support (by now: English and German - translators welcome)

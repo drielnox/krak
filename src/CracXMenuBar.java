@@ -7,8 +7,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 @SuppressWarnings("serial")
-public class BruteforcerMenuBar extends JMenuBar {
+public class CracXMenuBar extends JMenuBar {
     JMenu program;
+    
     JMenuItem info;
     JMenuItem close;
 
@@ -16,7 +17,7 @@ public class BruteforcerMenuBar extends JMenuBar {
     JMenuItem german;
     JMenuItem english;
 
-    public BruteforcerMenuBar() {
+    public CracXMenuBar() {
         program = new JMenu(Messages.getString("BruteforcerMenuBar.0")); //$NON-NLS-1$
 
         // --------------- Info -------------------------
@@ -30,7 +31,7 @@ public class BruteforcerMenuBar extends JMenuBar {
         program.add(info);
         // ----------------------------------------------
         program.addSeparator();
-        // ------------- Beenden ------------------------
+        // ------------- Quit ------------------------
         close = new JMenuItem(Messages.getString("BruteforcerMenuBar.2")); //$NON-NLS-1$
         // close.setIcon(new ImageIcon("icons/exit.jpg"));
         close.addActionListener(new ActionListener() {
@@ -41,7 +42,7 @@ public class BruteforcerMenuBar extends JMenuBar {
         });
         program.add(close);
         // ----------------------------------------------
-        // ---------- SPRACHEN --------------------------
+        // ---------- Languages --------------------------
         language = new JMenu(Messages.getString("BruteforcerMenuBar.3")); //$NON-NLS-1$
         english = new JMenuItem("english"); //$NON-NLS-1$
         english.setIcon(new ImageIcon("icons/english.png")); //$NON-NLS-1$
