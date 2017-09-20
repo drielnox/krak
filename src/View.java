@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -37,8 +38,9 @@ public class View extends JFrame {
      */
     public View() {
         super(Messages.getString("Version")); //$NON-NLS-1$
-        setLayout(new GridLayout(2, 1));
-        menubar = new CracXMenuBar();
+        this.setLayout(new GridLayout(2, 1));
+        
+        menubar = new CracXMenuBar(this);
 
         // VIEW PANEL ---------------------------
         searchPanel = new JPanel();
@@ -58,6 +60,7 @@ public class View extends JFrame {
 
         add(optionsView);
         add(searchPanel);
+        
         this.setLocationByPlatform(true);
         this.setJMenuBar(menubar);
         
@@ -79,7 +82,7 @@ public class View extends JFrame {
             	    writer.println("Charset:" + optionsView.charset.getText());
             	    writer.close();
             	} catch (IOException e) {
-            	   // just dont save the data
+            	   // just don't save the data
             	}
             	System.exit(0);
 			}
@@ -109,9 +112,8 @@ public class View extends JFrame {
 			}			
         });
         
-        this.setResizable(false);
-        this.pack();
-        this.setVisible(true);
+        this.setIconImage(new ImageIcon("icons/mainIcon.png").getImage());        
+        this.setResizable(false);        
         
         // parse in saved data
         Path dataFile = Paths.get("SavedData.log");
@@ -144,7 +146,13 @@ public class View extends JFrame {
 			optionsView.charset.setText(charset);
 		} catch (Exception e) {
 			return; // just use default settings
-		}
+		}	
+		
+		optionsView.UpdateTotalCombinationsDisplay();
+		
+		this.setSize(1200,600);
+        //this.pack();
+        this.setVisible(true);
     }
 
 }

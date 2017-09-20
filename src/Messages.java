@@ -26,6 +26,8 @@ public class Messages {
     	View.mainView.dispose();
     	View.mainView = new View();
     }
+    
+    public static String getLanguage() { return LANG_SET; }
 
     private Messages() {
     }

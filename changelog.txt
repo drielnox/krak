@@ -1,5 +1,13 @@
 Changelog
 
+CracX V.0.7
+- added a custom command-line option
+- improved the overall layout
+- added a display for the total amount of combinations with the current Bruteforce settings
+- configuration options are now disabled during the search process
+- added more icon images
+- source code cleanup
+
 CracX V.0.6
 - fixed broken extraction parameters with newer versions of 7-zip and WinRAR
 - the previous settings are now saved into a text file, and loaded on startup
