@@ -16,26 +16,18 @@ public class DictionaryAttack extends Observable implements Runnable{
     private LineNumberReader dictionary;
     private ProgramHandler handler;
     private JTextArea anzeige;
+    private int returnCheck;
 
     public DictionaryAttack(BruteForce br, JTextArea anzeige){
-        setBr(br);
-        setAnzeige(anzeige);
-    }
-
-    public JTextArea getAnzeige() {
-        return anzeige;
+        this.br = br;
+        this.anzeige = anzeige;
     }
     
-    public BruteForce getBr() {
-        return br;
-    }
-
-    public LineNumberReader getDictionary() {
-        return dictionary;
-    }
-
-    public ProgramHandler getProgram() {
-        return handler;
+    public void Initialize(ProgramHandler handler, LineNumberReader dictionary, int returnCheck)
+    {
+    	this.handler = handler;
+    	this.dictionary = dictionary;
+    	this.returnCheck = returnCheck;
     }
 
     public boolean isRunning() {
@@ -52,7 +44,8 @@ public class DictionaryAttack extends Observable implements Runnable{
                 
                 anzeige.setText(line); //$NON-NLS-1$
                 
-                if(ret == 1 || ret == 0) // success
+                if ((handler.getProgram() != 2 && (ret == 0 || ret == 1))  // archive program returns success or warning
+                		|| (handler.getProgram() == 2 && ret == returnCheck)) // custom return check fulfilled
                 {
                 	anzeige.setText(String.format("%s%s", Messages.getString("DictionaryAttack.1"), line)); //$NON-NLS-1$
                     setChanged();
@@ -61,7 +54,7 @@ public class DictionaryAttack extends Observable implements Runnable{
                 }
                 anzeige.setCaretPosition(anzeige.getText().length());
             }
-            getDictionary().close();
+            dictionary.close();
         } catch (IOException e) 
         {
             e.printStackTrace();
@@ -76,22 +69,6 @@ public class DictionaryAttack extends Observable implements Runnable{
         setRunning(false);
     }
 
-    public void setAnzeige(JTextArea anzeige) {
-        this.anzeige = anzeige;
-    }
-
-    public void setBr(BruteForce br) {
-        this.br = br;
-    }
-
-    public void setDictionary(LineNumberReader dictionary) {
-        this.dictionary = dictionary;
-    }
-
-    public void setProgram(ProgramHandler program) {
-        this.handler = program;
-    }
-
     public void setRunning(boolean running) {
         this.running = running;
     }
@@ -99,10 +76,5 @@ public class DictionaryAttack extends Observable implements Runnable{
     public void stop(){
         setRunning(false);
         br.stop();
-    }
-
-    public void setHandler(ProgramHandler programHandler) {
-        this.handler = programHandler;
-    }
-
+    }    
 }

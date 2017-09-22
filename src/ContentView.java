@@ -39,35 +39,50 @@ public class ContentView extends JPanel implements Observer{
             	File file = new File(filepath.getText());
                 File archive_program = new File(programpath.getText() + File.separator + program.getSelectedItem().toString() + ".exe"); //$NON-NLS-1$
                 
-                if (!file.exists()) { // archive not found
+                boolean customCommand = program.getSelectedIndex() == 2;
+                
+                if (!customCommand && !file.exists()) { // archive not found
                     logView.setText(logView.getText() + Messages.getString("ContentView.15")); //$NON-NLS-1$
                 } 
-                else if(!file.isFile()){ // archive not a valid file
+                else if(!customCommand && !file.isFile()){ // archive not a valid file
                     logView.setText(logView.getText() + Messages.getString("ContentView.11")); //$NON-NLS-1$
                 } 
-                else if(!file.canRead()){ // no read access on archive file
+                else if(!customCommand && !file.canRead()){ // no read access on archive file
                     logView.setText(logView.getText() + Messages.getString("ContentView.19")); //$NON-NLS-1$
                 }
-                else if (!archive_program.exists()) { // archive software not found
+                else if (!customCommand && !archive_program.exists()) { // archive software not found
                     logView.setText(logView.getText() + Messages.getString("ContentView.17")); //$NON-NLS-1$
                 }                
                 else // if archive and software found
                 { 
                 	logView.setText("");
                 	ChangeUIStateSearch();
+                	
+                	int commandCheck = 1;
+                	if(customCommand)
+                	{
+                		try {
+                			commandCheck = new Integer(Integer.parseInt(customReturnValue.getText()));
+                    	}
+                    	catch (NumberFormatException e) {
+                    		logView.setText(logView.getText() + Messages.getString("ContentView.42")); //$NON-NLS-1$
+                    		return;
+                    	}
+                	}
+                	
+                	String handlerProgramPath = customCommand ? customCommandLine.getText() : programpath.getText();
                     
-                    br.setCharset(charset.getText());
-                    br.setMaxPWLength(Integer.parseInt(maxPWLength.getText()));
-                    br.setMinPWLength(Integer.parseInt(minPWLength.getText()));
-                    br.setHandler(new ProgramHandler(program.getSelectedItem().toString(), programpath.getText(), filepath.getText()));
+                	ProgramHandler handler = new ProgramHandler(program.getSelectedIndex(), handlerProgramPath, filepath.getText());
+                	
+                	br.Initialize(charset.getText(), Integer.parseInt(minPWLength.getText()), Integer.parseInt(maxPWLength.getText()), 
+                			commandCheck, handler);
                     
                     if(dictionaryEnabled.isSelected())
                     { 
                     	// try dictionary attack first, afterwards bruteforce...
                         try 
                         {
-                            dictionary.setHandler(new ProgramHandler(program.getSelectedItem().toString(), programpath.getText(), filepath.getText()));
-                            dictionary.setDictionary(new LineNumberReader(new FileReader(dictionarypath.getText())));
+                        	dictionary.Initialize(handler, new LineNumberReader(new FileReader(dictionarypath.getText())), commandCheck);
                             Thread t = new Thread(dictionary);
                             t.start();
                             
@@ -371,7 +386,7 @@ public class ContentView extends JPanel implements Observer{
         customCommandLine.setToolTipText(Messages.getString("ContentView.37"));
         customReturnValue = new JTextField("0");
         customReturnValue.setPreferredSize(new Dimension(150,20));
-        customCommandLine.setToolTipText(Messages.getString("ContentView.38"));
+        customReturnValue.setToolTipText(Messages.getString("ContentView.38"));
         customPanel.add(new JLabel(Messages.getString("ContentView.39")));
         customPanel.add(customCommandLine);
         customPanel.add(new JLabel(Messages.getString("ContentView.40")));

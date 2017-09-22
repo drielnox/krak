@@ -80,6 +80,8 @@ public class View extends JFrame {
             	    writer.println("MinLength:" + optionsView.minPWLength.getText());
             	    writer.println("MaxLength:" + optionsView.maxPWLength.getText());
             	    writer.println("Charset:" + optionsView.charset.getText());
+            	    writer.println("CustomCommandLine:" + optionsView.customCommandLine.getText());
+            	    writer.println("CustomReturnValue:" + optionsView.customReturnValue.getText());
             	    writer.close();
             	} catch (IOException e) {
             	   // just don't save the data
@@ -118,7 +120,8 @@ public class View extends JFrame {
         // parse in saved data
         Path dataFile = Paths.get("SavedData.log");
 	 	Charset dataFileCharset = Charset.forName("UTF-8");
-		try {
+		try 
+		{
 			List<String> savedData = Files.readAllLines(dataFile, dataFileCharset);
 			
 			Integer programIndex = new Integer(savedData.get(0).substring(savedData.get(0).indexOf(':') + 1));
@@ -144,8 +147,16 @@ public class View extends JFrame {
 			
 			String charset = savedData.get(7).substring(savedData.get(7).indexOf(':') + 1);
 			optionsView.charset.setText(charset);
-		} catch (Exception e) {
-			return; // just use default settings
+			
+			String customCommandLine = savedData.get(8).substring(savedData.get(8).indexOf(':') + 1);
+			optionsView.customCommandLine.setText(customCommandLine);
+			
+			String customReturnValue = savedData.get(9).substring(savedData.get(9).indexOf(':') + 1);
+			optionsView.customReturnValue.setText(customReturnValue);
+		} 
+		catch (Exception e) 
+		{
+			// just use default settings
 		}	
 		
 		optionsView.UpdateTotalCombinationsDisplay();

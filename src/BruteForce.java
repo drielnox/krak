@@ -14,9 +14,11 @@ public class BruteForce extends Observable implements Runnable{
     private String combination; // current try
     private int maxPWLength;
     private int minPWLength;
+    private int returnCheck = 1;
     private boolean running;
     private JTextArea logView;
     private ProgramHandler handler;
+    
 
     public BruteForce(JTextArea logView) {
         this.logView = logView;
@@ -55,22 +57,23 @@ public class BruteForce extends Observable implements Runnable{
         setChanged();
         notifyObservers("failure");
     }
-
-    public void setCharset(String charset) {
-        this.charset = charset;
-    }
-
-    public void setMaxPWLength(int maxPWLength) {
-        this.maxPWLength = maxPWLength;
-    }
-
-    public void setMinPWLength(int minPWLength) {
-        this.minPWLength = minPWLength;
-    }
-
+    
     public void stop() {
         running = false;
     }
+    
+    public void Initialize(String charset, int minPWLength, int maxPWLength, int commandCheck, ProgramHandler handler)
+    {
+    	this.charset = charset;
+    	this.minPWLength = minPWLength;
+    	this.maxPWLength = maxPWLength;
+    	this.handler = handler;
+    	this.returnCheck = commandCheck;
+    }
+    
+    public void setHandler(ProgramHandler programHandler) {
+        this.handler = programHandler;
+    }        
 
     /**
      * try every combination on charset with given word length
@@ -80,11 +83,15 @@ public class BruteForce extends Observable implements Runnable{
      */
     int tryCombination(int index) {
         for (int i = 0; (i < charset.length() && running); i++) { // for char in charset
-            int ret = handler.tryPW(combination);
-
-            if (ret == 0 || ret == 1) { // success
+            int ret = handler.tryPW(combination); 
+            
+            if (handler.getProgram() != 2 && (ret == 0 || ret == 1)) { // archive program returns success or warning
                 return 1;
-            } else { 
+            }
+            else if(handler.getProgram() == 2 && ret == returnCheck) { // custom return check fulfilled
+            	return 1;
+            }
+            else { 
             	// replace char at index with next char from charset
                 String temp = combination;
                 combination = combination.substring(0, index)
@@ -97,7 +104,7 @@ public class BruteForce extends Observable implements Runnable{
                 logView.setText(combination); //$NON-NLS-1$
 
                 if (index > 0) { // increment from lowest indexes first
-                    if (tryCombination(index - 1) == 1)
+                    if (tryCombination(index - 1) == returnCheck)
                         return 1;
                 }
             }
@@ -105,10 +112,4 @@ public class BruteForce extends Observable implements Runnable{
 
         return 0;
     }
-
-    public void setHandler(ProgramHandler programHandler) {
-        this.handler = programHandler;
-    }
-
-    
 }
