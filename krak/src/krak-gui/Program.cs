@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿// <copyright file="Program.cs" company="Krak">
+// Copyright (c) Krak. All rights reserved.
+// </copyright>
 
-namespace krak_gui
+namespace Krak.Gui
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+
     static class Program
     {
         /// <summary>

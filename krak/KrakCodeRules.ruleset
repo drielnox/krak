@@ -8,4 +8,7 @@
   <Include Path="managedminimumrules.ruleset" Action="Default" />
   <Include Path="minimumrecommendedrules.ruleset" Action="Default" />
   <Include Path="securityrules.ruleset" Action="Default" />
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SA1101" Action="Hidden" />
+  </Rules>
 </RuleSet>
