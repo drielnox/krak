@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lgcy", "lgcy", "{BCF3037E-B4BA-4E6E-AC74-D3A25EC7812D}"
+	ProjectSection(SolutionItems) = preProject
+		lgcy\.classpath = lgcy\.classpath
+		lgcy\.project = lgcy\.project
+		lgcy\changelog.txt = lgcy\changelog.txt
+		lgcy\info.png = lgcy\info.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EA66D968-C347-47AF-B6A6-23CAEF9FDCCE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F572992C-F061-447F-AFB9-462C2FBD0751}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "icons", "icons", "{9778D569-356B-4F7B-9FA4-E1085B8863DB}"
+	ProjectSection(SolutionItems) = preProject
+		lgcy\icons\english.png = lgcy\icons\english.png
+		lgcy\icons\exit.png = lgcy\icons\exit.png
+		lgcy\icons\german.png = lgcy\icons\german.png
+		lgcy\icons\info.png = lgcy\icons\info.png
+		lgcy\icons\mainIcon.png = lgcy\icons\mainIcon.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A72B5C76-A051-4B72-B6EA-027F799B8E9A}"
+	ProjectSection(SolutionItems) = preProject
+		lgcy\src\BruteForce.java = lgcy\src\BruteForce.java
+		lgcy\src\ContentView.java = lgcy\src\ContentView.java
+		lgcy\src\CracXMenuBar.java = lgcy\src\CracXMenuBar.java
+		lgcy\src\DictionaryAttack.java = lgcy\src\DictionaryAttack.java
+		lgcy\src\InfoView.java = lgcy\src\InfoView.java
+		lgcy\src\Messages.java = lgcy\src\Messages.java
+		lgcy\src\messages.properties = lgcy\src\messages.properties
+		lgcy\src\messages_de.properties = lgcy\src\messages_de.properties
+		lgcy\src\ProgramHandler.java = lgcy\src\ProgramHandler.java
+		lgcy\src\View.java = lgcy\src\View.java
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".settings", ".settings", "{76A01DE3-77DD-4472-BDC8-583A4458AB51}"
+	ProjectSection(SolutionItems) = preProject
+		lgcy\.settings\org.eclipse.jdt.core.prefs = lgcy\.settings\org.eclipse.jdt.core.prefs
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9778D569-356B-4F7B-9FA4-E1085B8863DB} = {BCF3037E-B4BA-4E6E-AC74-D3A25EC7812D}
+		{A72B5C76-A051-4B72-B6EA-027F799B8E9A} = {BCF3037E-B4BA-4E6E-AC74-D3A25EC7812D}
+		{76A01DE3-77DD-4472-BDC8-583A4458AB51} = {BCF3037E-B4BA-4E6E-AC74-D3A25EC7812D}
+	EndGlobalSection
+EndGlobal
