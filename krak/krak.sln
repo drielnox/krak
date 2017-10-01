@@ -43,7 +43,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".settings", ".settings", "{
 		lgcy\.settings\org.eclipse.jdt.core.prefs = lgcy\.settings\org.eclipse.jdt.core.prefs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "krak-gui", "src\krak-gui\krak-gui.csproj", "{DE22371C-A135-46D2-BD94-A869C4C6D65A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "krak-lib", "src\krak-lib\krak-lib.csproj", "{87433DFD-B57D-481A-ADBE-3DA13F4FABE6}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE22371C-A135-46D2-BD94-A869C4C6D65A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE22371C-A135-46D2-BD94-A869C4C6D65A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE22371C-A135-46D2-BD94-A869C4C6D65A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE22371C-A135-46D2-BD94-A869C4C6D65A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87433DFD-B57D-481A-ADBE-3DA13F4FABE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87433DFD-B57D-481A-ADBE-3DA13F4FABE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87433DFD-B57D-481A-ADBE-3DA13F4FABE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87433DFD-B57D-481A-ADBE-3DA13F4FABE6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
@@ -51,5 +69,7 @@ Global
 		{9778D569-356B-4F7B-9FA4-E1085B8863DB} = {BCF3037E-B4BA-4E6E-AC74-D3A25EC7812D}
 		{A72B5C76-A051-4B72-B6EA-027F799B8E9A} = {BCF3037E-B4BA-4E6E-AC74-D3A25EC7812D}
 		{76A01DE3-77DD-4472-BDC8-583A4458AB51} = {BCF3037E-B4BA-4E6E-AC74-D3A25EC7812D}
+		{DE22371C-A135-46D2-BD94-A869C4C6D65A} = {EA66D968-C347-47AF-B6A6-23CAEF9FDCCE}
+		{87433DFD-B57D-481A-ADBE-3DA13F4FABE6} = {EA66D968-C347-47AF-B6A6-23CAEF9FDCCE}
 	EndGlobalSection
 EndGlobal
